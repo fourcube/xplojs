@@ -1,0 +1,28 @@
+{
+  "name": "xplojs",
+  "version": "1.0.0",
+  "description": "Launch fireworks inside your favorite canvas.",
+  "main": "./dist/lib.js",
+  "types": "./dist/lib/main.d.ts",
+  "author": "Chris Grieger <chris@scolp.de>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --host 0.0.0.0",
+    "build": "rimraf dist; webpack",
+    "build:docs": "rimraf docs; cp -r static docs; npm run build; cp dist/lib.js docs/"
+  },
+  "libraryConfig": {
+    "name": "Xplojs"
+  },
+  "devDependencies": {
+    "@types/node": "^9.3.0",
+    "@types/webpack": "^3.8.3",
+    "json-loader": "^0.5.7",
+    "rimraf": "^2.6.2",
+    "ts-loader": "^3.3.1",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
