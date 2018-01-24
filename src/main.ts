@@ -13,15 +13,21 @@ export default class Xplojs {
   private width: number;
   private height: number;
 
-  constructor(selector: string) {
+  constructor(private selector: string) {
+    this.reset();
+    this.clear();
+    this.render(0);
+  }
 
-    this.el = document.querySelector(selector) as HTMLCanvasElement;
+  reset() {
+    this.el = document.querySelector(this.selector) as HTMLCanvasElement;
     if (!this.el.parentElement) {
       return;
     }
 
     this.el.width = this.el.parentElement.clientWidth * 2;
     this.el.height = this.el.parentElement.clientHeight * 2;
+
 
     this.width = this.el.width / 2
     this.height = this.el.height / 2;
@@ -30,6 +36,9 @@ export default class Xplojs {
     this.el.style.height = this.height + 'px';
 
     this.ctx = this.el.getContext('2d') as CanvasRenderingContext2D;
+    this.ctx.scale(2, 2);
+
+    this.objects = [];
 
     this.objects.push(new Rocket(this.ctx, {
       alpha: 1,
@@ -40,11 +49,7 @@ export default class Xplojs {
       decay: 0,
       gravity: 0,
       color: 0,
-    }))
-
-    this.ctx.scale(2, 2);
-    this.clear();
-    this.render(0);
+    }));
   }
 
   render(t: number) {

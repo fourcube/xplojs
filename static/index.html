@@ -49,7 +49,11 @@
 
     <script type="text/javascript" src="lib.js"></script>
     <script>
-      const foo = new Xplojs.default('.app');
+      const xplojs = new Xplojs.default('.app');
+
+      window.addEventListener('resize', () => {
+        xplojs.reset();
+      });
     </script>
   </body>
 </html>
