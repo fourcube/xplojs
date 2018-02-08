@@ -12,22 +12,32 @@ export default class Xplojs {
   private objects: Drawable[] = [];
   private width: number;
   private height: number;
+  private startTime: number;
+  /**
+   * Maximal duration of fireworks in milliseconds;
+   */
+  public fireworksDuration: number;
 
-  constructor(private selector: string) {
+  constructor(private selector: string | HTMLElement) {
     this.reset();
     this.clear();
-    this.render(0);
   }
 
   reset() {
-    this.el = document.querySelector(this.selector) as HTMLCanvasElement;
+    if (this.selector instanceof HTMLElement) {
+      this.el = this.selector as HTMLCanvasElement;
+    } else {
+      this.el = document.querySelector(this.selector) as HTMLCanvasElement;
+    }
+
     if (!this.el.parentElement) {
       return;
     }
 
+    this.startTime = Date.now();
+
     this.el.width = this.el.parentElement.clientWidth * 2;
     this.el.height = this.el.parentElement.clientHeight * 2;
-
 
     this.width = this.el.width / 2
     this.height = this.el.height / 2;
@@ -35,32 +45,32 @@ export default class Xplojs {
     this.el.style.width = this.width + 'px';
     this.el.style.height = this.height + 'px';
 
+    this.fireworksDuration = parseInt(this.el.getAttribute('data-fireworks-duration') || '0');
     this.ctx = this.el.getContext('2d') as CanvasRenderingContext2D;
     this.ctx.scale(2, 2);
 
     this.objects = [];
 
-    this.objects.push(new Rocket(this.ctx, {
-      alpha: 1,
-      x: this.width / 2,
-      y: this.height,
-      direction: -135,
-      velocity: 0.25,
-      decay: 0,
-      gravity: 0,
-      color: 0,
-    }));
+    this.seed(4);
+
+    this.render(0);
   }
 
   render(t: number) {
     const now = Date.now();
-    requestAnimationFrame(this.render.bind(this));
 
+
+    if (!this.keepRunning() && this.objects.length == 0) {
+      this.clear();
+      return;
+    }
+
+    requestAnimationFrame(this.render.bind(this));
     this.objects = this.objects.filter(o => {
      return !o.dead;
     });
 
-    if (this.objects.filter(o => o instanceof Rocket).length < 1) {
+    if (this.keepRunning() && this.objects.filter(o => o instanceof Rocket).length < 1) {
       this.seed();
     }
 
@@ -71,7 +81,7 @@ export default class Xplojs {
     if (now - this.lastLoop > (1 / this.fps) * 1000) {
       this.lastLoop = now;
 
-      this.ctx.fillStyle = 'rgba(31, 127, 103, 0.09)'
+      this.ctx.fillStyle = 'rgba(31, 127, 103, 0.14)'
       this.ctx.fillRect(0,0,this.width, this.height);
 
       this.objects.forEach(o => {
@@ -91,8 +101,8 @@ export default class Xplojs {
     }
   }
 
-  seed() {
-    const count = Math.ceil((Math.random() * 10));
+  seed(n?: number) {
+    const count = n || Math.ceil((Math.random() * 10));
 
     for (let i = 0; i < count; i++) {
       this.objects.push(new Rocket(this.ctx, {
@@ -106,6 +116,19 @@ export default class Xplojs {
         color: 0,
       }))
     }
+  }
+
+  keepRunning() {
+    const duration = Date.now() - this.startTime;
+
+    /**
+     * Stop when the duration has been reached.
+     */
+    if (this.fireworksDuration > 0 && duration > this.fireworksDuration) {
+      return false;
+    }
+
+    return true;
   }
 
   clear() {

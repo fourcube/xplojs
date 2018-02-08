@@ -3,7 +3,7 @@ const pkg = require('./package.json')
 
 const config = {
   devtool: 'eval',
-  entry: resolve(__dirname, 'src/main.ts'),
+  entry: resolve(__dirname, 'src/lib.ts'),
   output: {
     path: resolve(__dirname, 'dist'),
     filename: 'lib.js',
