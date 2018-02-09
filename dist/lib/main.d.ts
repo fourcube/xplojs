@@ -15,7 +15,9 @@ export default class Xplojs {
     fireworksDuration: number;
     constructor(selector: string | HTMLElement);
     reset(): void;
-    render(t: number): void;
+    start(): void;
+    stop(): void;
+    render(t?: number): void;
     seed(n?: number): void;
     keepRunning(): boolean;
     clear(): void;
