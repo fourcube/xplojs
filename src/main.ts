@@ -13,6 +13,7 @@ export default class Xplojs {
   private width: number;
   private height: number;
   private startTime: number;
+
   /**
    * Maximal duration of fireworks in milliseconds;
    */
@@ -34,8 +35,6 @@ export default class Xplojs {
       return;
     }
 
-    this.startTime = Date.now();
-
     this.el.width = this.el.parentElement.clientWidth * 2;
     this.el.height = this.el.parentElement.clientHeight * 2;
 
@@ -50,13 +49,21 @@ export default class Xplojs {
     this.ctx.scale(2, 2);
 
     this.objects = [];
-
-    this.seed(4);
-
-    this.render(0);
   }
 
-  render(t: number) {
+  start() {
+    this.startTime = Date.now();
+    this.seed(4);
+    this.render();
+  }
+
+  stop() {
+    // Set to 1ms, this will make the animation end after all particles
+    // have disappeared.
+    this.fireworksDuration = 1;
+  }
+
+  render(t = 0) {
     const now = Date.now();
 
 

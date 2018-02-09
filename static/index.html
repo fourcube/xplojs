@@ -44,12 +44,17 @@
       <div class="content">
         <h1>xplojs</h1>
       </div>
-      <canvas class="app" data-fireworks-duration="3000"></canvas>
+      <canvas class="app" data-fireworks-duration="30000"></canvas>
     </div>
 
     <script type="text/javascript" src="lib.js"></script>
     <script>
       var xplojs = new Xplojs('.app');
+      xplojs.start();
+
+      setTimeout(() => {
+        xplojs.stop();
+      }, 10000);
 
       window.addEventListener('resize', function () {
         xplojs.reset();
