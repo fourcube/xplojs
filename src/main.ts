@@ -19,6 +19,11 @@ export default class Xplojs {
    */
   public fireworksDuration: number;
 
+  /**
+   * Background fill color.
+   */
+  public fillColor: string;
+
   constructor(private selector: string | HTMLElement) {
     this.reset();
     this.clear();
@@ -45,7 +50,9 @@ export default class Xplojs {
     this.el.style.height = this.height + 'px';
 
     this.fireworksDuration = parseInt(this.el.getAttribute('data-fireworks-duration') || '0');
-    this.ctx = this.el.getContext('2d') as CanvasRenderingContext2D;
+
+    this.fillColor = this.el.getAttribute('data-fireworks-fill-color') || 'rgba(31, 127, 103, 0.14)';
+      this.ctx = this.el.getContext('2d') as CanvasRenderingContext2D;
     this.ctx.scale(2, 2);
 
     this.objects = [];
@@ -88,7 +95,7 @@ export default class Xplojs {
     if (now - this.lastLoop > (1 / this.fps) * 1000) {
       this.lastLoop = now;
 
-      this.ctx.fillStyle = 'rgba(31, 127, 103, 0.14)'
+      this.ctx.fillStyle = this.fillColor;
       this.ctx.fillRect(0,0,this.width, this.height);
 
       this.objects.forEach(o => {
@@ -116,8 +123,8 @@ export default class Xplojs {
         alpha: 1,
         x: Math.random() * this.width,
         y: this.height,
-        direction: (Math.random() * 60) - 180,
-        velocity: 0.25,
+        direction: -135 - ((Math.random() * 30) - 15) ,
+        velocity: 0.3,
         decay: 0,
         gravity: Math.random() < 0.08 ? Math.random() * 4 : 0,
         color: 0,
@@ -139,7 +146,7 @@ export default class Xplojs {
   }
 
   clear() {
-    this.ctx.fillStyle = '#1F7F67';
+    this.ctx.fillStyle = this.fillColor;
     this.ctx.fillRect(0,0,this.width, this.height);
   }
 

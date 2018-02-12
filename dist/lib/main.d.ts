@@ -13,6 +13,10 @@ export default class Xplojs {
      * Maximal duration of fireworks in milliseconds;
      */
     fireworksDuration: number;
+    /**
+     * Background fill color.
+     */
+    fillColor: string;
     constructor(selector: string | HTMLElement);
     reset(): void;
     start(): void;

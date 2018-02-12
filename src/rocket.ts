@@ -24,7 +24,7 @@ export class Rocket extends Particle {
 
   explode(force = false): Particle[] {
     if (this.age < 5000) {
-      if (this.config.y > this.ctx.canvas.height / 3.5) {
+      if (this.config.y > this.ctx.canvas.height / 5) {
         return [];
       }
 
@@ -33,7 +33,7 @@ export class Rocket extends Particle {
       }
     }
 
-    const particleCount = 100 + (Math.random() * 400);
+    const particleCount = 170 + (Math.random() * 400);
     const particles: Particle[] = [];
 
     for(let i=0;i<particleCount;i++) {
@@ -43,7 +43,7 @@ export class Rocket extends Particle {
       newConfig.velocity = newConfig.velocity * (Math.random() * 1.9);
       newConfig.alpha = Math.random();
       newConfig.decay = Math.max(Math.random() * 0.10, 0.008);
-      newConfig.gravity = Math.random() < 0.01 ? Math.random() * 10 : 0;
+      newConfig.gravity = Math.random() < 0.1 ? Math.random() * 10 : 0;
 
       particles.push(new Particle(this.ctx, newConfig));
     }
