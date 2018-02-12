@@ -60,7 +60,7 @@ export default class Xplojs {
 
   start() {
     this.startTime = Date.now();
-    this.seed(4);
+    this.seed(8);
     this.render();
   }
 
@@ -84,7 +84,7 @@ export default class Xplojs {
      return !o.dead;
     });
 
-    if (this.keepRunning() && this.objects.filter(o => o instanceof Rocket).length < 1) {
+    if (this.keepRunning() && this.objects.filter(o => o instanceof Rocket).length < 3) {
       this.seed();
     }
 
@@ -116,12 +116,12 @@ export default class Xplojs {
   }
 
   seed(n?: number) {
-    const count = n || Math.ceil((Math.random() * 10));
+    const count = n || Math.ceil((Math.random() * 7));
 
     for (let i = 0; i < count; i++) {
       this.objects.push(new Rocket(this.ctx, {
         alpha: 1,
-        x: Math.random() * this.width,
+        x: (this.width / 10) +  (Math.random() * (this.width / 1.2)) ,
         y: this.height,
         direction: -135 - ((Math.random() * 30) - 15) ,
         velocity: 0.3,
