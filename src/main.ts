@@ -25,6 +25,14 @@ export default class Xplojs {
   public fillColor: string;
 
   constructor(private selector: string | HTMLElement) {
+    this.el = null as any;
+    this.ctx = null as any;
+    this.width = 0;
+    this.height = 0;
+    this.startTime = 0;
+    this.fillColor = '';
+    this.fireworksDuration = 0;
+
     this.reset();
     this.clear();
   }
@@ -36,8 +44,8 @@ export default class Xplojs {
       this.el = document.querySelector(this.selector) as HTMLCanvasElement;
     }
 
-    if (!this.el.parentElement) {
-      return;
+    if (!this.el || !this.el.parentElement) {
+      throw new Error("Missing selector or target element for xplojs construction");
     }
 
     this.el.width = this.el.parentElement.clientWidth * 2;
