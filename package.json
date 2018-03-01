@@ -1,6 +1,6 @@
 {
   "name": "xplojs",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Launch fireworks inside your favorite canvas.",
   "main": "./dist/lib.js",
   "types": "./dist/lib/main.d.ts",
