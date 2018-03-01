@@ -1,6 +1,7 @@
 export default class Xplojs {
     private selector;
     private el;
+    private parentEl;
     private ctx;
     private fps;
     private lastLoop;

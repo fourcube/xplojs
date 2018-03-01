@@ -5,6 +5,7 @@ import { Rocket } from './rocket';
 
 export default class Xplojs {
   private el: HTMLCanvasElement;
+  private parentEl: HTMLElement;
   private ctx: CanvasRenderingContext2D;
   private fps = 120;
   private lastLoop = Date.now();
@@ -32,6 +33,7 @@ export default class Xplojs {
     this.startTime = 0;
     this.fillColor = '';
     this.fireworksDuration = 0;
+    this.parentEl = null as any;
 
     this.reset();
     this.clear();
@@ -44,12 +46,27 @@ export default class Xplojs {
       this.el = document.querySelector(this.selector) as HTMLCanvasElement;
     }
 
+
     if (!this.el || !this.el.parentElement) {
       throw new Error("Missing selector or target element for xplojs construction");
     }
 
-    this.el.width = this.el.parentElement.clientWidth * 2;
-    this.el.height = this.el.parentElement.clientHeight * 2;
+    this.parentEl = this.el.parentElement;
+    let positionStyle = window.getComputedStyle(this.parentEl).getPropertyValue("position");
+
+    while(positionStyle === 'static') {
+      if (this.parentEl.parentElement) {
+        this.parentEl = this.parentEl.parentElement;
+      } else {
+        console.warn('Xplojs: No non-static parent element found.');
+        break;
+      }
+
+      positionStyle = window.getComputedStyle(this.parentEl).getPropertyValue("position");
+    }
+
+    this.el.width = this.parentEl.clientWidth * 2;
+    this.el.height = this.parentEl.clientHeight * 2;
 
     this.width = this.el.width / 2
     this.height = this.el.height / 2;
